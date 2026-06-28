@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Capabilities | Design Asylum Studio</title>
+<meta name="description" content="Capabilities — Design Asylum Studio. A selection of branding, website and film projects." />
+
+<!-- React + Babel (pinned) -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<!-- Design Asylum design system -->
+<link rel="stylesheet" href="_ds/design-asylum-studio-v3-5943145e-1a4f-4091-8df6-de00e686edbf/styles.css" />
+<script src="_ds/design-asylum-studio-v3-5943145e-1a4f-4091-8df6-de00e686edbf/_ds_bundle.js"></script>
+
+<style>
+  /* Blinker = Regular 400 only (design-system rule): remap heavier Blinker
+     faces to the 400 master so any weight (incl. DS bundle) renders Regular. */
+  @font-face { font-family:'Blinker'; font-style:normal; font-weight:500; font-display:swap; src:url('https://cdn.jsdelivr.net/npm/@fontsource/blinker/files/blinker-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family:'Blinker'; font-style:normal; font-weight:600; font-display:swap; src:url('https://cdn.jsdelivr.net/npm/@fontsource/blinker/files/blinker-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family:'Blinker'; font-style:normal; font-weight:700; font-display:swap; src:url('https://cdn.jsdelivr.net/npm/@fontsource/blinker/files/blinker-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family:'Blinker'; font-style:normal; font-weight:800; font-display:swap; src:url('https://cdn.jsdelivr.net/npm/@fontsource/blinker/files/blinker-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family:'Blinker'; font-style:normal; font-weight:900; font-display:swap; src:url('https://cdn.jsdelivr.net/npm/@fontsource/blinker/files/blinker-latin-400-normal.woff2') format('woff2'); }
+
+  :root {
+    --da-gutter: 40px;
+    --page-max-width: 1500px;
+    --gutter: clamp(16px, 3vw, 40px);
+    --radius-cards: 0px;
+    --radius-body-blocks: 0px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    min-width: 1180px;
+    background: var(--color-paper-white);
+    color: var(--color-obsidian-ink);
+    -webkit-font-smoothing: antialiased;
+    font-synthesis: none;
+  }
+  ::selection { background: var(--color-solar-bloom); color: var(--color-obsidian-ink); }
+  #root *, #root *::before, #root *::after { font-style: normal !important; }
+
+  .da-wrap { max-width: var(--page-max-width); margin: 0 auto; padding-left: var(--da-gutter); padding-right: var(--da-gutter); }
+  #root h2 { font-weight: 400; }
+
+  /* reveal */
+  .sl-reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s cubic-bezier(.22,.61,.36,1), transform .7s cubic-bezier(.22,.61,.36,1); }
+  .sl-reveal.is-in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .sl-reveal { opacity: 1; transform: none; transition: none; } }
+
+  /* breadcrumb / mail (shared class names used by SLFooter) */
+  .sl-crumb { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.1em; font-size: 11px; }
+  .sl-crumb a { text-decoration: none; }
+  .sl-crumb-sep { font-size: 13px; }
+  .da-mail { text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+  .da-mail .da-mail-arrow { display: inline-block; transition: transform .2s ease; }
+  .da-mail:hover .da-mail-arrow { transform: translate(3px, -3px); }
+
+  /* ---- capabilities thumbnail grid (3 per row) ---- */
+  .cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px 16px; }
+  .cap-tile { display: flex; flex-direction: column; text-decoration: none; }
+  .cap-tile-cover { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; }
+  .cap-tile-glow { position: absolute; inset: 0; background: radial-gradient(90% 130% at 18% 16%, rgba(255,194,64,0.40), transparent 52%), radial-gradient(90% 130% at 86% 88%, rgba(81,111,234,0.44), transparent 52%), radial-gradient(60% 100% at 60% 30%, rgba(150,235,235,0.24), transparent 56%); }
+  .cap-tile-word { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 20px; text-align: center; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.02em; font-size: clamp(26px, 2.6vw, 44px); }
+  .cap-tile-meta { margin-top: 16px; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+  .cap-tile-name { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: -0.01em; font-size: 19px; color: var(--color-obsidian-ink); }
+  .cap-tile-service { font-family: var(--font-serif); font-size: 16px; color: var(--color-graphite); }
+
+  /* only the live (first) tile is interactive */
+  .cap-tile.is-live { cursor: pointer; }
+  .cap-tile.is-live .cap-tile-cover { transition: transform .25s ease; }
+  .cap-tile.is-live:hover .cap-tile-cover { transform: translateY(-4px); }
+  .cap-tile.is-live:hover .cap-tile-name { color: var(--color-iris-voltage); }
+  .cap-tile-cta { position: absolute; right: 16px; bottom: 16px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.6); color: var(--color-paper-white); padding: 9px 15px; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.06em; font-size: 11px; white-space: nowrap; opacity: 0; transform: translateY(6px); transition: opacity .25s ease, transform .25s ease; }
+  .cap-tile.is-live:hover .cap-tile-cta { opacity: 1; transform: none; }
+
+  @media (min-width: 1728px) { :root { --page-max-width: 1680px; --da-gutter: 56px; } }
+  @media (min-width: 2240px) { :root { --page-max-width: 2080px; --da-gutter: 80px; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react" src="sevenloop/sl-shared.jsx"></script>
+<script type="text/babel" data-presets="react" src="cap/cap-app.jsx"></script>
+</body>
+</html>
