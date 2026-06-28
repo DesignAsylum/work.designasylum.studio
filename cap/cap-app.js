@@ -83,8 +83,7 @@
   }
 
   function mount() {
-    const ns = window.DesignAsylumDesignSystem_594314;
-    const ready = ns && window.ReactDOM && window.SLNav && window.SLFooter && window.useReveal && window.Eyebrow;
+    const ready = window.ReactDOM && window.SLNav && window.SLFooter && window.useReveal && window.Eyebrow;
     if (!ready) { return setTimeout(mount, 50); }
     ReactDOM.createRoot(document.getElementById('root')).render(<CapPage />);
   }
