@@ -45,7 +45,7 @@
 <body>
 <div id="root"></div>
 
-<script type="text/babel" data-presets="react" src="../sevenloop/sl-shared.jsx"></script>
+<script type="text/babel" data-presets="react" src="../sevenloop/sl-shared.js"></script>
 <script type="text/babel" data-presets="react">
 (function () {
   const CLIENT = 'Cascade';
@@ -71,8 +71,7 @@
   }
 
   function mount() {
-    const ns = window.DesignAsylumDesignSystem_594314;
-    const ready = ns && window.ReactDOM && window.SLNav && window.SLFooter && window.useReveal && window.Eyebrow;
+    const ready = window.ReactDOM && window.SLNav && window.SLFooter && window.useReveal && window.Eyebrow;
     if (!ready) { return setTimeout(mount, 50); }
     ReactDOM.createRoot(document.getElementById('root')).render(<HubPage />);
   }
