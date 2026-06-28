@@ -169,22 +169,31 @@
     );
   }
 
-  /* one filter group: title + multi-select checkbox list */
-  function FilterGroup({ title, options, selected, onToggle }) {
+  /* one accordion filter group: collapsible header (with selected-count badge)
+     + multi-select checkbox list */
+  function FilterGroup({ title, options, selected, onToggle, open, onToggleOpen }) {
     return (
-      <div className="cap-filter-group">
-        <h3 className="cap-filter-title">{title}</h3>
-        <div className="cap-filter-opts">
-          {options.map((opt) => {
-            const on = selected.indexOf(opt) !== -1;
-            return (
-              <label key={opt} className={'cap-filter-opt' + (on ? ' is-on' : '')}>
-                <input type="checkbox" checked={on} onChange={() => onToggle(opt)} />
-                {opt}
-              </label>
-            );
-          })}
-        </div>
+      <div className={'cap-filter-group' + (open ? ' is-open' : '')}>
+        <button type="button" className="cap-filter-head" aria-expanded={open} onClick={onToggleOpen}>
+          <span className="cap-filter-head-label">
+            {title}
+            {selected.length > 0 && <span className="cap-filter-badge">{selected.length}</span>}
+          </span>
+          <span aria-hidden className="cap-filter-chevron">&#9660;</span>
+        </button>
+        {open && (
+          <div className="cap-filter-opts">
+            {options.map((opt) => {
+              const on = selected.indexOf(opt) !== -1;
+              return (
+                <label key={opt} className={'cap-filter-opt' + (on ? ' is-on' : '')}>
+                  <input type="checkbox" checked={on} onChange={() => onToggle(opt)} />
+                  {opt}
+                </label>
+              );
+            })}
+          </div>
+        )}
       </div>
     );
   }
@@ -193,8 +202,19 @@
     const [selIndustries, setSelIndustries] = React.useState([]);
     const [selSizes, setSelSizes] = React.useState([]);
     const [selServices, setSelServices] = React.useState([]);
+    /* which accordion panels are expanded (Industry open by default) */
+    const [openGroups, setOpenGroups] = React.useState({ Industry: true, 'Company size': false, Services: false });
 
-    function toggle(setter) {
+    function toggleOpen(title) {
+      setOpenGroups(function (prev) {
+        const next = {}; for (const k in prev) next[k] = prev[k];
+        next[title] = !prev[title];
+        return next;
+      });
+    }
+
+    /* setter + value -> remove if present, else add */
+    function toggleValue(setter) {
       return function (value) {
         setter(function (prev) {
           return prev.indexOf(value) !== -1
@@ -203,10 +223,19 @@
         });
       };
     }
+    const toggleIndustry = toggleValue(setSelIndustries);
+    const toggleSize = toggleValue(setSelSizes);
+    const toggleService = toggleValue(setSelServices);
 
     function clearAll() { setSelIndustries([]); setSelSizes([]); setSelServices([]); }
 
     const activeCount = selIndustries.length + selSizes.length + selServices.length;
+
+    /* flat list of active selections for the chips row (label + remover) */
+    const chips = []
+      .concat(selIndustries.map(function (v) { return { value: v, remove: toggleIndustry }; }))
+      .concat(selSizes.map(function (v) { return { value: v, remove: toggleSize }; }))
+      .concat(selServices.map(function (v) { return { value: v, remove: toggleService }; }));
 
     /* AND across groups, OR within a group; empty group = no constraint */
     const visible = PROJECTS.filter(function (p) {
@@ -239,12 +268,23 @@
                   Clear filters
                 </button>
               </div>
-              <FilterGroup title="Industry" options={INDUSTRIES} selected={selIndustries} onToggle={toggle(setSelIndustries)} />
-              <FilterGroup title="Company size" options={SIZES} selected={selSizes} onToggle={toggle(setSelSizes)} />
-              <FilterGroup title="Services" options={SERVICES} selected={selServices} onToggle={toggle(setSelServices)} />
+              <FilterGroup title="Industry" options={INDUSTRIES} selected={selIndustries} onToggle={toggleIndustry} open={openGroups['Industry']} onToggleOpen={() => toggleOpen('Industry')} />
+              <FilterGroup title="Company size" options={SIZES} selected={selSizes} onToggle={toggleSize} open={openGroups['Company size']} onToggleOpen={() => toggleOpen('Company size')} />
+              <FilterGroup title="Services" options={SERVICES} selected={selServices} onToggle={toggleService} open={openGroups['Services']} onToggleOpen={() => toggleOpen('Services')} />
             </aside>
 
             <div>
+              {chips.length > 0 && (
+                <div className="cap-chips">
+                  {chips.map((c) => (
+                    <span key={c.value} className="cap-chip">
+                      {c.value}
+                      <button type="button" className="cap-chip-x" aria-label={'Remove ' + c.value} onClick={() => c.remove(c.value)}>&times;</button>
+                    </span>
+                  ))}
+                  <button type="button" className="cap-chips-clear" onClick={clearAll}>Clear all</button>
+                </div>
+              )}
               {visible.length === 0
                 ? <p className="cap-empty">No projects match these filters. Try clearing one or more.</p>
                 : (

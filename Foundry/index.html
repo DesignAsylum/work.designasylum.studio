@@ -21,7 +21,7 @@
   @font-face { font-family:'Blinker'; font-style:normal; font-weight:700; font-display:swap; src:url('https://cdn.jsdelivr.net/npm/@fontsource/blinker/files/blinker-latin-400-normal.woff2') format('woff2'); }
   @font-face { font-family:'Blinker'; font-style:normal; font-weight:800; font-display:swap; src:url('https://cdn.jsdelivr.net/npm/@fontsource/blinker/files/blinker-latin-400-normal.woff2') format('woff2'); }
   @font-face { font-family:'Blinker'; font-style:normal; font-weight:900; font-display:swap; src:url('https://cdn.jsdelivr.net/npm/@fontsource/blinker/files/blinker-latin-400-normal.woff2') format('woff2'); }
-  :root { --da-gutter: 40px; --page-max-width: 1500px; --gutter: clamp(16px, 3vw, 40px); --radius-cards: 0px; --radius-body-blocks: 0px; }
+  :root { --da-gutter: 40px; --page-max-width: 1500px; --gutter: clamp(16px, 3vw, 40px); --radius-cards: 0px; --radius-body-blocks: 0px; --font-display: 'Blinker', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; --font-serif: 'Blinker', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body { margin: 0; min-width: 1180px; background: var(--color-paper-white); color: var(--color-obsidian-ink); -webkit-font-smoothing: antialiased; font-synthesis: none; }
@@ -45,7 +45,7 @@
 <body>
 <div id="root"></div>
 
-<script type="text/babel" data-presets="react" src="../sevenloop/sl-shared.js"></script>
+<script type="text/babel" data-presets="react" src="../sevenloop/sl-shared.js?v=20260628"></script>
 <script type="text/babel" data-presets="react">
 (function () {
   const CLIENT = 'Foundry';
