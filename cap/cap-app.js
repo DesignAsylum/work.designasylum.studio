@@ -147,7 +147,7 @@
       <React.Fragment>
         <div className="cap-tile-cover" style={{ background: p.cover }}>
           <div aria-hidden className="cap-tile-glow" />
-          <span className="cap-tile-word" style={{ color: p.word }}>{p.name}</span>
+          <span aria-hidden className="cap-tile-word" style={{ color: p.word }}>{p.name}</span>
           <span className="cap-tile-cta" aria-hidden>
             Visit project <span>&rarr;</span>
           </span>
@@ -188,6 +188,7 @@
               return (
                 <label key={opt} className={'cap-filter-opt' + (on ? ' is-on' : '')}>
                   <input type="checkbox" checked={on} onChange={() => onToggle(opt)} />
+                  <span aria-hidden className="cap-check" />
                   {opt}
                 </label>
               );
@@ -290,7 +291,7 @@
                 : (
                   <div className="cap-grid">
                     {visible.map((p) => (
-                      <a key={p.name} className="cap-tile is-live" href={p.href}>
+                      <a key={p.name} className="cap-tile is-live" href={p.href} aria-label={p.name + ' — ' + p.size + ' client hub'}>
                         <TileInner p={p} />
                       </a>
                     ))}

@@ -74,10 +74,11 @@
   .cap-filter-clear:hover { color: var(--color-iris-voltage); border-bottom-color: var(--color-iris-voltage); }
   .cap-filter-clear:disabled { opacity: 0.4; cursor: default; }
 
-  /* selected-filter chips */
-  .cap-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
-  .cap-chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 8px 6px 12px; background: var(--color-iris-voltage); color: var(--color-paper-white); font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; }
-  .cap-chip-x { appearance: none; background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: var(--color-paper-white); font-size: 14px; line-height: 1; display: inline-flex; opacity: 0.8; transition: opacity .15s ease; }
+  /* selected-filter chips (outlined) */
+  .cap-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 24px; }
+  .cap-chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 8px 6px 12px; background: var(--color-paper-white); border: 1px solid var(--color-obsidian-ink); color: var(--color-obsidian-ink); font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; transition: border-color .15s ease, color .15s ease; }
+  .cap-chip:hover { border-color: var(--color-iris-voltage); color: var(--color-iris-voltage); }
+  .cap-chip-x { appearance: none; background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: currentColor; font-size: 15px; line-height: 1; display: inline-flex; opacity: 0.7; transition: opacity .15s ease; }
   .cap-chip-x:hover { opacity: 1; }
   .cap-chips-clear { appearance: none; background: none; border: none; padding: 6px 4px; cursor: pointer; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.06em; font-size: 11px; color: var(--color-graphite); border-bottom: 1px solid transparent; transition: color .2s ease, border-color .2s ease; }
   .cap-chips-clear:hover { color: var(--color-iris-voltage); border-bottom-color: var(--color-iris-voltage); }
@@ -93,9 +94,14 @@
   .cap-filter-opts { display: flex; flex-direction: column; gap: 11px; padding: 2px 0 18px; }
   .cap-filter-opt { display: flex; align-items: center; gap: 10px; cursor: pointer; font-family: var(--font-serif); font-size: 15px; color: var(--color-graphite); line-height: 1.2; transition: color .15s ease; }
   .cap-filter-opt:hover { color: var(--color-iris-voltage); }
-  .cap-filter-opt input { appearance: none; -webkit-appearance: none; width: 16px; height: 16px; flex: 0 0 16px; margin: 0; border: 1px solid var(--color-graphite); background: var(--color-paper-white); cursor: pointer; position: relative; transition: background .15s ease, border-color .15s ease; }
-  .cap-filter-opt input:checked { background: var(--color-iris-voltage); border-color: var(--color-iris-voltage); }
-  .cap-filter-opt input:checked::after { content: ''; position: absolute; left: 5px; top: 2px; width: 4px; height: 8px; border: solid var(--color-paper-white); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  /* the real input is visually hidden but stays focusable; the visible box is a
+     span we fully control, so design-system input resets can't blank it out */
+  .cap-filter-opt input { position: absolute; width: 1px; height: 1px; opacity: 0; margin: 0; pointer-events: none; }
+  .cap-check { flex: 0 0 18px; width: 18px; height: 18px; box-sizing: border-box; display: inline-block; position: relative; border: 1.5px solid var(--color-graphite); background: var(--color-paper-white); transition: background .15s ease, border-color .15s ease; }
+  .cap-filter-opt:hover .cap-check { border-color: var(--color-iris-voltage); }
+  .cap-filter-opt input:checked + .cap-check { background: var(--color-iris-voltage); border-color: var(--color-iris-voltage); }
+  .cap-filter-opt input:checked + .cap-check::after { content: ''; position: absolute; left: 5px; top: 1px; width: 5px; height: 9px; border: solid var(--color-paper-white); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  .cap-filter-opt input:focus-visible + .cap-check { outline: 2px solid var(--color-iris-voltage); outline-offset: 2px; }
   .cap-filter-opt.is-on { color: var(--color-obsidian-ink); }
 
   /* ---- project grid (2 per row) ---- */
@@ -119,14 +125,37 @@
 
   /* all tiles are interactive */
   .cap-tile.is-live { cursor: pointer; }
-  .cap-tile.is-live .cap-tile-cover { transition: transform .25s ease; }
-  .cap-tile.is-live:hover .cap-tile-cover { transform: translateY(-4px); }
-  .cap-tile.is-live:hover .cap-tile-name { color: var(--color-iris-voltage); }
-  .cap-tile-cta { position: absolute; right: 16px; bottom: 16px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.6); color: var(--color-paper-white); padding: 9px 15px; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.06em; font-size: 11px; white-space: nowrap; opacity: 0; transform: translateY(6px); transition: opacity .25s ease, transform .25s ease; }
-  .cap-tile.is-live:hover .cap-tile-cta { opacity: 1; transform: none; }
+  .cap-tile.is-live .cap-tile-cover { transition: transform .25s ease, box-shadow .25s ease; }
+  .cap-tile-cta { position: absolute; right: 16px; bottom: 16px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.7); color: var(--color-paper-white); padding: 9px 15px; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.06em; font-size: 11px; white-space: nowrap; opacity: 0; transform: translateY(6px); transition: opacity .25s ease, transform .25s ease; }
+  /* keyboard accessibility: clear focus ring on the whole card */
+  .cap-tile.is-live:focus-visible { outline: 2px solid var(--color-iris-voltage); outline-offset: 4px; }
+  .cap-tile.is-live:focus-visible .cap-tile-cta { opacity: 1; transform: none; }
+  /* hover affordances only where a real pointer can hover */
+  @media (hover: hover) {
+    .cap-tile.is-live:hover .cap-tile-cover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(20,19,26,0.16); }
+    .cap-tile.is-live:hover .cap-tile-name { color: var(--color-iris-voltage); }
+    .cap-tile.is-live:hover .cap-tile-cta { opacity: 1; transform: none; }
+  }
+  /* touch devices never hover: keep the CTA visible so the affordance isn't lost */
+  @media (hover: none) {
+    .cap-tile-cta { opacity: 1; transform: none; }
+  }
 
-  /* narrower viewports: collapse to single column under the sidebar breakpoint */
+  /* ---- responsive ---- */
+  /* below the two-column breakpoint, cards stack one-up */
   @media (max-width: 1320px) { .cap-grid { grid-template-columns: 1fr; } }
+  /* tablet / mobile: drop the desktop min-width and stack filters above the grid */
+  @media (max-width: 900px) {
+    body { min-width: 0; }
+    .cap-layout { grid-template-columns: 1fr; gap: 0; }
+    .cap-filters { position: static; top: auto; margin-bottom: 28px; }
+    .cap-filters-head { margin-bottom: 8px; }
+    header.da-wrap { padding-top: 120px; }
+  }
+  @media (max-width: 560px) {
+    .cap-tile-cover { aspect-ratio: 3 / 2; }
+    .cap-chips { gap: 6px; }
+  }
 
   @media (min-width: 1728px) { :root { --page-max-width: 1680px; --da-gutter: 56px; } }
   @media (min-width: 2240px) { :root { --page-max-width: 2080px; --da-gutter: 80px; } }
@@ -135,7 +164,7 @@
 <body>
 <div id="root"></div>
 
-<script type="text/babel" data-presets="react" src="sevenloop/sl-shared.js?v=20260628"></script>
-<script type="text/babel" data-presets="react" src="cap/cap-app.js?v=20260628"></script>
+<script type="text/babel" data-presets="react" src="sevenloop/sl-shared.js?v=20260628b"></script>
+<script type="text/babel" data-presets="react" src="cap/cap-app.js?v=20260628b"></script>
 </body>
 </html>
