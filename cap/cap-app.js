@@ -205,6 +205,16 @@
     const [selServices, setSelServices] = React.useState([]);
     /* which accordion panels are expanded (Industry open by default) */
     const [openGroups, setOpenGroups] = React.useState({ Industry: true, 'Company size': false, Services: false });
+    /* mobile bottom-sheet open state */
+    const [sheetOpen, setSheetOpen] = React.useState(false);
+
+    /* lock body scroll while the mobile sheet is open; close on Escape */
+    React.useEffect(function () {
+      document.body.style.overflow = sheetOpen ? 'hidden' : '';
+      function onKey(e) { if (e.key === 'Escape') setSheetOpen(false); }
+      window.addEventListener('keydown', onKey);
+      return function () { window.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
+    }, [sheetOpen]);
 
     function toggleOpen(title) {
       setOpenGroups(function (prev) {
@@ -262,7 +272,12 @@
 
         <section className="da-wrap" style={{ paddingTop: 'clamp(48px,5vw,80px)', paddingBottom: 'var(--section-pad-y)' }}>
           <div className="cap-layout">
-            <aside className="cap-filters" aria-label="Filter projects">
+            <div aria-hidden className={'cap-sheet-backdrop' + (sheetOpen ? ' is-open' : '')} onClick={() => setSheetOpen(false)} />
+            <aside className={'cap-filters' + (sheetOpen ? ' is-open' : '')} aria-label="Filter projects" role="dialog" aria-modal={sheetOpen}>
+              <div className="cap-sheet-head">
+                <span className="cap-sheet-title">Filters</span>
+                <button type="button" className="cap-sheet-close" aria-label="Close filters" onClick={() => setSheetOpen(false)}>&times;</button>
+              </div>
               <div className="cap-filters-head">
                 <span className="cap-filters-count">Showing {visible.length} of {PROJECTS.length}</span>
                 <button type="button" className="cap-filter-clear" onClick={clearAll} disabled={activeCount === 0}>
@@ -272,9 +287,20 @@
               <FilterGroup title="Industry" options={INDUSTRIES} selected={selIndustries} onToggle={toggleIndustry} open={openGroups['Industry']} onToggleOpen={() => toggleOpen('Industry')} />
               <FilterGroup title="Company size" options={SIZES} selected={selSizes} onToggle={toggleSize} open={openGroups['Company size']} onToggleOpen={() => toggleOpen('Company size')} />
               <FilterGroup title="Services" options={SERVICES} selected={selServices} onToggle={toggleService} open={openGroups['Services']} onToggleOpen={() => toggleOpen('Services')} />
+              <div className="cap-sheet-foot">
+                <button type="button" className="cap-sheet-apply" onClick={() => setSheetOpen(false)}>
+                  Show {visible.length} {visible.length === 1 ? 'result' : 'results'}
+                </button>
+              </div>
             </aside>
 
             <div>
+              <div className="cap-mobile-bar">
+                <button type="button" className="cap-filter-trigger" onClick={() => setSheetOpen(true)}>
+                  Filters{activeCount > 0 && <span className="cap-filter-badge">{activeCount}</span>}
+                </button>
+                <span className="cap-filters-count">Showing {visible.length} of {PROJECTS.length}</span>
+              </div>
               {chips.length > 0 && (
                 <div className="cap-chips">
                   {chips.map((c) => (
