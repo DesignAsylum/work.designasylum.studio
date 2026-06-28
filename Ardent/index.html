@@ -11,6 +11,16 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 
+<!-- Design-system fallback tokens (used when _ds is unavailable) -->
+<style>
+  :root {
+    --color-paper-white: #ffffff; --color-obsidian-ink: #15131a; --color-graphite: #6b6770;
+    --color-ash: #e3e1e6; --color-iris-voltage: #3b3df0; --color-solar-bloom: #ffc24a;
+    --color-block-ink: #161320; --color-block-iris: #516fea; --color-block-maroon: #5a1f2a;
+    --color-block-solar: #ffd36b; --color-block-teal: #96ebeb; --section-pad-y: clamp(64px, 8vw, 120px);
+  }
+</style>
+
 <!-- Design Asylum design system -->
 <link rel="stylesheet" href="../_ds/design-asylum-studio-v3-5943145e-1a4f-4091-8df6-de00e686edbf/styles.css" />
 <script src="../_ds/design-asylum-studio-v3-5943145e-1a4f-4091-8df6-de00e686edbf/_ds_bundle.js"></script>
