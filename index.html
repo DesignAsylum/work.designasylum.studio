@@ -60,15 +60,44 @@
   .da-mail .da-mail-arrow { display: inline-block; transition: transform .2s ease; }
   .da-mail:hover .da-mail-arrow { transform: translate(3px, -3px); }
 
-  /* ---- capabilities thumbnail grid (3 per row) ---- */
-  .cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px 16px; }
+  /* ---- e-commerce layout: filter sidebar + project grid ---- */
+  .cap-layout { display: grid; grid-template-columns: 260px 1fr; gap: clamp(24px, 3vw, 48px); align-items: start; }
+
+  /* ---- filter sidebar ---- */
+  .cap-filters { position: sticky; top: 96px; align-self: start; }
+  .cap-filters-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 16px; margin-bottom: 20px; border-bottom: 1px solid var(--color-ash); }
+  .cap-filters-count { font-family: var(--font-serif); font-size: 14px; color: var(--color-graphite); }
+  .cap-filter-clear { appearance: none; background: none; border: none; padding: 0; cursor: pointer; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.06em; font-size: 11px; color: var(--color-graphite); border-bottom: 1px solid transparent; transition: color .2s ease, border-color .2s ease; }
+  .cap-filter-clear:hover { color: var(--color-iris-voltage); border-bottom-color: var(--color-iris-voltage); }
+  .cap-filter-clear:disabled { opacity: 0.4; cursor: default; }
+  .cap-filter-group { margin-bottom: 26px; }
+  .cap-filter-title { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.1em; font-size: 11px; color: var(--color-obsidian-ink); margin: 0 0 12px; }
+  .cap-filter-opts { display: flex; flex-direction: column; gap: 9px; }
+  .cap-filter-opt { display: flex; align-items: center; gap: 9px; cursor: pointer; font-family: var(--font-serif); font-size: 15px; color: var(--color-graphite); line-height: 1.2; transition: color .15s ease; }
+  .cap-filter-opt:hover { color: var(--color-iris-voltage); }
+  .cap-filter-opt input { appearance: none; -webkit-appearance: none; width: 15px; height: 15px; flex: 0 0 15px; border: 1px solid var(--color-graphite); background: var(--color-paper-white); cursor: pointer; position: relative; transition: background .15s ease, border-color .15s ease; }
+  .cap-filter-opt input:checked { background: var(--color-iris-voltage); border-color: var(--color-iris-voltage); }
+  .cap-filter-opt input:checked::after { content: ''; position: absolute; left: 4px; top: 1px; width: 4px; height: 8px; border: solid var(--color-paper-white); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  .cap-filter-opt.is-on { color: var(--color-obsidian-ink); }
+
+  /* ---- project grid (2 per row) ---- */
+  .cap-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px 24px; }
+  .cap-empty { font-family: var(--font-serif); font-size: 18px; color: var(--color-graphite); padding: 40px 0; }
   .cap-tile { display: flex; flex-direction: column; text-decoration: none; }
   .cap-tile-cover { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; }
   .cap-tile-glow { position: absolute; inset: 0; background: radial-gradient(90% 130% at 18% 16%, rgba(255,194,64,0.40), transparent 52%), radial-gradient(90% 130% at 86% 88%, rgba(81,111,234,0.44), transparent 52%), radial-gradient(60% 100% at 60% 30%, rgba(150,235,235,0.24), transparent 56%); }
   .cap-tile-word { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 20px; text-align: center; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.02em; font-size: clamp(26px, 2.6vw, 44px); }
-  .cap-tile-meta { margin-top: 16px; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+  .cap-tile-body { margin-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .cap-tile-meta { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
   .cap-tile-name { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: -0.01em; font-size: 19px; color: var(--color-obsidian-ink); }
-  .cap-tile-service { font-family: var(--font-serif); font-size: 16px; color: var(--color-graphite); }
+  .cap-tile-size { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.08em; font-size: 10px; color: var(--color-graphite); }
+  .cap-tile-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .cap-tag { font-family: var(--font-display); font-weight: 400; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; padding: 4px 9px; border: 1px solid var(--color-ash); color: var(--color-graphite); white-space: nowrap; }
+  .cap-tile-desc { font-family: var(--font-serif); font-size: 15px; line-height: 1.5; color: var(--color-graphite); margin: 0; }
+  .cap-tile-highlights { display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 2px; }
+  .cap-highlight { display: flex; align-items: baseline; gap: 8px; }
+  .cap-highlight-dot { width: 6px; height: 6px; flex: 0 0 6px; background: var(--color-iris-voltage); border-radius: 50%; transform: translateY(-1px); }
+  .cap-highlight-label { font-family: var(--font-serif); font-size: 14px; line-height: 1.3; color: var(--color-obsidian-ink); }
 
   /* all tiles are interactive */
   .cap-tile.is-live { cursor: pointer; }
@@ -77,6 +106,9 @@
   .cap-tile.is-live:hover .cap-tile-name { color: var(--color-iris-voltage); }
   .cap-tile-cta { position: absolute; right: 16px; bottom: 16px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.6); color: var(--color-paper-white); padding: 9px 15px; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.06em; font-size: 11px; white-space: nowrap; opacity: 0; transform: translateY(6px); transition: opacity .25s ease, transform .25s ease; }
   .cap-tile.is-live:hover .cap-tile-cta { opacity: 1; transform: none; }
+
+  /* narrower viewports: collapse to single column under the sidebar breakpoint */
+  @media (max-width: 1320px) { .cap-grid { grid-template-columns: 1fr; } }
 
   @media (min-width: 1728px) { :root { --page-max-width: 1680px; --da-gutter: 56px; } }
   @media (min-width: 2240px) { :root { --page-max-width: 2080px; --da-gutter: 80px; } }
